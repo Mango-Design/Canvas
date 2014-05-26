@@ -96,7 +96,7 @@ $lib = (function ($){
 
         return poly;
     }
-    lermo
+
     function getCentroid(points){
         var i, len, cache, ret = {x: 0, y: 0};
 
@@ -554,3 +554,4 @@ $lib = (function ($){
 }(jQuery));
 
 $lib.init();
+
