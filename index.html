@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Canvas Tutorial</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="stylesheet" href="css/normalize.min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/jquery-1.11.0.min.js"></script>
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="js/main.js"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $(".wbuttons").on("click", "li:not('#clear')", function () {
+                    var data;
+                    data = $(this).attr("data");
+                    data = JSON.parse(data);
+                    $lib.addPoly(data);
+                })
+                .on("click", "#clear", function () {
+                    $lib.destroy();
+                });
+
+                $("#drawPoly").on("click.draw", function () {
+                    var $this = $(this), $canvas = $("canvas");
+
+                    if(!$this.hasClass("save")){
+                        $this.html("Save Poly").addClass("save");
+                        $canvas.trigger("drawPoly");
+
+                    }else {
+                        $this.html("Draw Poly").removeClass("save");
+                        $canvas.trigger("savePoly");
+                    }
+                });
+
+                $("#bbox, #ctroid").on("change", function (){
+                    var $this = $(this);
+
+                    if(!$this.hasClass("show")){
+                        $this.addClass("show");
+                        if($this.attr("id") == "bbox"){
+                            $lib.toggleBBox(true);
+                        }else{
+                            $lib.toggleCenter(true);
+                        }
+                    }else{
+                        $this.removeClass("show");
+                        if($this.attr("id") == "bbox"){
+                            $lib.toggleBBox(false);
+                        }else{
+                            $lib.toggleCenter(false);
+                        }
+                    }
+
+                    $lib.refresh();
+
+                });
+            });
+        </script>
+    </head>
+    <body>
+        <h1>Canvas 2D Tutorial</h1>
+        <div class="wrapper">
+            <canvas id="canvas00"></canvas>
+            <aside class="wbuttons">
+                <ul>
+                    <li id="square" data='{"points":[{"x":0,"y":0},{"x":100,"y":0},{"x":100,"y":100},{"x":0,"y":100}],"origin":[100,100],"closed":true,"fillStyle":"orange","strokeStyle":"red","dotStyle":"black","thickness":4,"drawn":false,"selected":false,"showBBox":false}'>Square</li>
+                    <li id="triangle" data='{"points":[{"x":0,"y":0},{"x":50,"y":100},{"x":-50,"y":100}],"origin":[400,100],"closed":true,"fillStyle":"violet","strokeStyle":"blue","dotStyle":"black","thickness":4,"drawn":false,"selected":false,"showBBox":false}'>Triangle</li>
+                    <li id="clear">Clear</li>
+                </ul>
+            </aside>
+            <aside class="instructions">
+                <h2>Welcome</h2>
+                <p>Use <span class="bold">Buttons on the right side</span> or <span class="bold">Draw Poly</span> button to create new Polys.</p>
+                <p>Hit <span class="bold">Left Mouse</span> click to select a Poly.</p>
+                <p>Press <span class="bold">C</span> Key to delete a selected Poly.</p>
+                <p>Press <span class="bold">T</span> Key to translate a selected Poly.</p>
+            </aside>
+            <div class="options">
+                <input type="checkbox" id="bbox"/>
+                Show Bounding Boxes
+                <input type="checkbox" id="ctroid"/>
+                Show Center
+            </div>
+            <div id="drawPoly" class="button">Draw Poly</div>
+        </div>
+	</body>
+</html>
