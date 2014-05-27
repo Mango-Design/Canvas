@@ -228,7 +228,8 @@ $lib = (function ($){
                     fillStyle: "#202020",
                     strokeStyle: "#606060",
                     showBBox: false,
-                    centroid: false
+                    centroid: false,
+                    list: $(".wbuttons > ul")
                 };
 
                 $canvas.get(0).setAttribute("width", theme.width);
@@ -294,7 +295,7 @@ $lib = (function ($){
                             newPoly["boundingBox"] = getBoundingBox(newPoly.points);
 
                             self.draw(newPoly);
-                            self.refresh(newPoly);
+                            self.refresh();
 
                         });
                 })
@@ -311,7 +312,7 @@ $lib = (function ($){
                     }
 
                     json = JSON.stringify(newPoly);
-                    $list = $(".wbuttons > ul");
+                    $list = theme.list;
                     name = "Custom " + $list.find(".customPoly").length;
                     $list.append("<li class='customPoly' data='" + json + "'>" + name + "</li>");
 
@@ -336,14 +337,10 @@ $lib = (function ($){
                         if(sel.length){
                             for(i = 0, len = sel.length; i < len; i = i + 1){
                                 cache = sel[i];
-                                //TODO verify why the refresh rate doesn't clear the region before the objects moves out of the original position, especially when the mouse moves fast.
 
-                                self.refresh(cache, (function (clos) {
-
-                                    clos.origin[0] = mx - cache.centroid.x;
-                                    clos.origin[1] = my - cache.centroid.y;
-
-                                }(cache)));
+                                self.refresh();
+                                cache.origin[0] = mx - cache.centroid.x;
+                                cache.origin[1] = my - cache.centroid.y;
                             }
                         }
 
@@ -352,7 +349,7 @@ $lib = (function ($){
                     });
                 }
             }).on("keypress.C", function(e){
-                var sel, cache, i, len;
+                var cache, i;
                 if(e.which === 99){
 
                     for(i = 0; i <  polys.length; i = i + 1){
@@ -522,21 +519,9 @@ $lib = (function ($){
         },
 
         //Refresh the canvas and redraw objects
-        refresh: function (sPoly, callback){
-            var toWipe;
-
-            callback = callback || function () {};
-
-            if(sPoly){
-                toWipe = getBBoxIntersect(sPoly, 5);
-                self.clear(toWipe);
-                self.draw(toWipe);
-            }else{
-                self.clearAll();
-                self.draw(polys);
-            }
-
-            callback();
+        refresh: function (){
+            self.clearAll();
+            self.draw(polys);
 
         },
 
@@ -554,4 +539,3 @@ $lib = (function ($){
 }(jQuery));
 
 $lib.init();
-
