@@ -1,7 +1,7 @@
-This Code is intended for studing purpose only.
-The Library i'm going to wrote will face from scratch all the problems involved with 2D drawing on canvas, object handling, etc.
+This example was built just for fun, to face some of the problems involved with 2D drawing on canvas, polygons, object handling, 
+transformations, drawing techniques etc.
 
-JSFiddle: http://jsfiddle.net/IvanSollima/T6YKL/
+See it live: http://jsfiddle.net/IvanSollima/T6YKL/
 
 Ivan Sollima.
 
